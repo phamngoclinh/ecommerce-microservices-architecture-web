@@ -1,30 +1,21 @@
-import Link from "next/link"
-import { Product } from "./types/product"
+import ProductList from "@/components/ProductList"
+import { Suspense } from "react"
 
 export default async function Home() {
-  const data = await fetch('http://localhost:3001/get-products', {
+  const products = fetch('http://localhost:3001/get-products', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-  })
-  const products: Product[] = await data.json()
-  console.log('products', products)
+  }).then(res => res.json())
 
   return (
-    <ul>
-      {products.map((product) => {
-        return (
-        <li key={product.id}>
-            <br />
-            <Link href={`product/${product.id}`}>{product.name}</Link>
-            <p>Price: {product.sellingPrice}</p>
-            <button>Add to cart</button>
-            <br/>
-        </li>
-      )
-      })}
-    </ul>
+    <div className="max-w-5xl mx-auto p-8">
+      <h1 className="text-2xl font-bold mb-6">Product List</h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductList products={products} />
+      </Suspense>
+    </div>
   )
   
 }

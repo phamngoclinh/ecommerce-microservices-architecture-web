@@ -1,5 +1,5 @@
-import { Product } from "@/app/types/product"
-import { Stock } from "@/app/types/stock"
+import ProductDetail from "@/components/ProductDetail"
+import { Suspense } from "react";
 
 export default async function ProductPage({
   params,
@@ -7,35 +7,19 @@ export default async function ProductPage({
   params: Promise<{ id: number }>
 }) {
   const { id } = await params
-  console.log('id', id)
 
-  const productData = await fetch('http://localhost:3001/get-product', {
+  const productData = fetch('http://localhost:3001/get-product', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ id })
   })
-  const product: Product = await productData.json()
-  console.log('product', product)
+    .then(res => res.json());
 
-  const stockData = await fetch('http://localhost:3001/get-stock', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId: id })
-  })
-  const stock: Stock = await stockData.json() 
-  console.log('stock', stock)
-
-  return (<div>
-    <h5>{product.name}</h5>
-    <h6>Price: {product.sellingPrice.toLocaleString()}</h6>
-    <strong>Stock: {stock.status}</strong>
-    <br/>
-    Quantity: <input type="number" min="1" max={stock.quantity} defaultValue={1} />
-    <br/>
-    <button>Add to cart</button>
-  </div>)
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductDetail product={productData} />
+    </Suspense>
+  )
 }
