@@ -1,4 +1,3 @@
-import { Order, OrderStatus } from "@/app/types/order";
 import OrderList from "@/components/OrderList";
 import { Suspense } from "react";
 
@@ -8,99 +7,13 @@ export default function AccountPage() {
     email: 'linh.pham@example.com',
   };
 
-  // const orders = fetch('http://localhost:3002/get-orders', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
-  //   .then(res => res.json());
-  
-  const orders: Promise<Order[]> = new Promise((resolve) => {
-    const data = [
-      {
-        id: 1,
-        createdAt: new Date().toDateString(),
-        totalAmount: 1000000.00,
-        status: 'Pending' as OrderStatus,
-        orderItems: [
-          {
-            id: 1,
-            order: { id: 1 },
-            product: {
-              id: 1,
-              sellingPrice: 10000,
-              name: 'aa aa'
-            },
-            unitPrice: 1000000,
-            quantity: 1,
-            lineAmount: 1000000
-          }
-        ]
-      },
-      {
-        id: 2,
-        createdAt: new Date().toDateString(),
-        totalAmount: 1300000.00,
-        status: 'Paid' as OrderStatus,
-        orderItems: [
-          {
-            id: 1,
-            order: { id: 1 },
-            product: {
-              id: 1,
-              sellingPrice: 10000,
-              name: 'aa aa'
-            },
-            unitPrice: 1000000,
-            quantity: 1,
-            lineAmount: 1000000
-          }
-        ]
-      },
-      {
-        id: 3,
-        createdAt: new Date().toDateString(),
-        totalAmount: 1300000.00,
-        status: 'Shipped' as OrderStatus,
-        orderItems: [
-          {
-            id: 1,
-            order: { id: 1 },
-            product: {
-              id: 1,
-              sellingPrice: 10000,
-              name: 'aa aa'
-            },
-            unitPrice: 1000000,
-            quantity: 1,
-            lineAmount: 1000000
-          }
-        ]
-      },
-      {
-        id: 4,
-        createdAt: new Date().toDateString(),
-        totalAmount: 1300000.00,
-        status: 'Completed' as OrderStatus,
-        orderItems: [
-          {
-            id: 1,
-            order: { id: 1 },
-            product: {
-              id: 1,
-              sellingPrice: 10000,
-              name: 'aa aa'
-            },
-            unitPrice: 1000000,
-            quantity: 1,
-            lineAmount: 1000000
-          }
-        ]
-      }
-    ]
-    resolve(data)
+  const orders = fetch('http://localhost:3002/get-orders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
+    .then(res => res.json());
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4">
