@@ -27,7 +27,7 @@ interface CartState {
 }
 
 const fetchBase = async (endPoint: string, item: unknown, success: (data: CartItemResponse | CartItemResponse[]) => void, failure: (error: Error) => void) => {
-  return fetch('http://localhost:3005' + endPoint, {
+  return fetch('http://localhost:3002/cart' + endPoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -76,6 +76,7 @@ export const useCartStore = create<CartState>((set) => ({
       '/add-item',
       {
         productId: item.id,
+        productName: item.name,
         unitPrice: item.sellingPrice,
         quantity: item.quantity
       },
