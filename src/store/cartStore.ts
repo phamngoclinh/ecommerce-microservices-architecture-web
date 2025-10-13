@@ -23,11 +23,13 @@ interface CartState {
   fetchCarts: () => void;
   addItem: (item: CartItem) => void;
   removeItem: (id: number) => void;
-  clearCart: () => void;
+  clearCart: (success?: () => void, fail?: () => void) => void;
+  changeQuantity: (itemId: number, quantity: number) => void;
+  checkout: (success: () => void, fail: () => void) => void;
 }
 
 const fetchBase = async (endPoint: string, item: unknown, success: (data: CartItemResponse | CartItemResponse[]) => void, failure: (error: Error) => void) => {
-  return fetch('http://localhost:3002/cart' + endPoint, {
+  return fetch('http://localhost:3002' + endPoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,13 +50,13 @@ const fetchBase = async (endPoint: string, item: unknown, success: (data: CartIt
     })
 }
 
-export const useCartStore = create<CartState>((set) => ({
+export const useCartStore = create<CartState>((set, get) => ({
   loading: true,
   error: undefined,
   items: [],
   fetchCarts: () => {
     fetchBase(
-      '/get-items',
+      '/cart/get-items',
       {},
       (data) => {
         const items = (data as CartItemResponse[]).map(i => ({
@@ -73,7 +75,7 @@ export const useCartStore = create<CartState>((set) => ({
   addItem: (item) => {
     set({ loading: true })
     fetchBase(
-      '/add-item',
+      '/cart/add-item',
       {
         productId: item.id,
         productName: item.name,
@@ -106,7 +108,7 @@ export const useCartStore = create<CartState>((set) => ({
   removeItem: (id) => {
     set({ loading: true })
     fetchBase(
-      '/remove-item',
+      '/cart/remove-item',
       { productId: id },
       () => {
         set((state) => ({ items: state.items.filter((i) => i.id !== id), loading: false }))
@@ -116,12 +118,53 @@ export const useCartStore = create<CartState>((set) => ({
       }
     )
   },
-  clearCart: () => {
+  clearCart: (success?: () => void, fail?: () => void) => {
     set({ loading: true })
     fetchBase(
-      '/clear',
+      '/cart/clear',
       {},
-      () => set({ items: [], loading: false }),
-      (error) => set({ error: error.message, loading: false }))
+      () => {
+        success?.();
+        set({ items: [], loading: false })
+      },
+      (error) => {
+        fail?.();
+        set({ error: error.message, loading: false })
+      })
+  },
+  changeQuantity: (id: number, quantity: number) => {
+    set({ loading: true })
+    fetchBase(
+      '/cart/update-item',
+      { productId: id, quantity },
+      () => {
+        set((state) => ({
+          items: state.items.map(item => {
+            if (item.id === id) item.quantity = quantity;
+            return item;
+          })
+        }))
+      },
+      (error) => {
+        set({ error: error.message, loading: false })
+      }
+    )
+  },
+  checkout: (success: () => void, fail: () => void) => {
+    set({ loading: true })
+    fetchBase(
+      '/order/create-order',
+      {
+        orderItems: get().items.map(item => ({
+          productId: item.id,
+          productName: item.name,
+          unitPrice: item.sellingPrice,
+          quantity: item.quantity
+        })),
+        paymentMethod: 'credit_card'
+      },
+      success,
+      fail
+    )
   },
 }));

@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params
-  const order = fetch('http://localhost:3001/get-order', {
+  const order = fetch('http://localhost:3002/order/get-order', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -5,15 +5,20 @@ import { formatCurrency } from '@/utils/formatter';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
-  const { items, clearCart } = useCartStore();
+  const { items, clearCart, checkout } = useCartStore();
   const router = useRouter();
 
   const total = items.reduce((sum, i) => sum + i.sellingPrice * i.quantity, 0);
 
   const handleCheckout = () => {
-    alert('Payment successful!');
-    clearCart();
-    router.push('/');
+    checkout(() => {
+      alert('Payment successful!');
+      clearCart(() => {
+        router.push('/');
+      });
+    }, () => {
+      alert('Payment failed!');
+    })
   };
 
   return (

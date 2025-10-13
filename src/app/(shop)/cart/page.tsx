@@ -4,7 +4,7 @@ import { formatCurrency } from '@/utils/formatter';
 import Link from 'next/link';
 
 export default function CartPage() {
-  const { items, removeItem, clearCart } = useCartStore();
+  const { items, removeItem, clearCart, changeQuantity } = useCartStore();
 
   const total = items.reduce((sum, i) => sum + i.sellingPrice * i.quantity, 0);
 
@@ -22,6 +22,14 @@ export default function CartPage() {
             >
               <p>{item.name}</p>
               <p>{formatCurrency(item.sellingPrice)} x {item.quantity}</p>
+              <input
+                type="number"
+                defaultValue={item.quantity}
+                min={1}
+                onChange={(e) => changeQuantity(item.id, parseInt(e.target.value))}
+                className="border rounded w-16 text-center"
+                />
+              <p>{formatCurrency(item.sellingPrice * item.quantity)}</p>
               <button
                 onClick={() => removeItem(item.id)}
                 className="text-red-500"
@@ -36,7 +44,7 @@ export default function CartPage() {
           </div>
           <div className="mt-6 flex gap-3">
             <button
-              onClick={clearCart}
+              onClick={() => clearCart()}
               className="bg-gray-200 px-4 py-2 rounded"
             >
               Clear Cart

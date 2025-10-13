@@ -7,7 +7,7 @@ export default function AccountPage() {
     email: 'linh.pham@example.com',
   };
 
-  const orders = fetch('http://localhost:3002/get-orders', {
+  const orders = fetch('http://localhost:3002/order/get-orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

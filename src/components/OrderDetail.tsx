@@ -18,7 +18,7 @@ export default function OrderDetail({ order }: { order: Promise<Order> }) {
           {orderData.orderItems.map((item, i) => (
             <li key={i} className="py-2 flex justify-between text-sm">
               <span>
-                {item.product.name} × {item.quantity}
+                {item.productName} × {item.quantity}
               </span>
               <span>{formatCurrency(item.lineAmount)}</span>
             </li>

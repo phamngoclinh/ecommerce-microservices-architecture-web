@@ -9,15 +9,16 @@ export type Order = {
     vat?: number;
     amount?: number;
     totalAmount: number;
-    createdAt: string
+    createdDate: string
 }
 
-export type OrderStatus = 'Pending' | 'Paid' | 'Shipped' | 'Completed';
+export type OrderStatus = 'PENDING' | 'PAID' | 'SHIPPED' | 'COMPLETED';
 
 export type OrderItem = {
     id: number;
-    order: { id: number; };
-    product: Product;
+    orderId: number;
+    productId: number;
+    productName: string;
     unitPrice: number;
     quantity: number;
     lineAmount: number;
