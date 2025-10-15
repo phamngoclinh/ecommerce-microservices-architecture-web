@@ -13,7 +13,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <div className="border rounded-xl p-4 shadow-md">
       <h3 className="text-lg font-bold">{product.name}</h3>
       <p className="text-gray-600">
-        {formatCurrency(product.sellingPrice)}
+        {formatCurrency(product.price)}
       </p>
       <div className="flex items-center gap-2 mt-2">
         <input

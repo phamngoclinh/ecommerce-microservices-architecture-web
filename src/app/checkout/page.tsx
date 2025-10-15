@@ -8,7 +8,7 @@ export default function CheckoutPage() {
   const { items, clearCart, checkout } = useCartStore();
   const router = useRouter();
 
-  const total = items.reduce((sum, i) => sum + i.sellingPrice * i.quantity, 0);
+  const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   const handleCheckout = () => {
     checkout(() => {

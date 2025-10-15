@@ -2,7 +2,7 @@ import ProductList from "@/components/ProductList"
 import { Suspense } from "react"
 
 export default async function Home() {
-  const products = fetch('http://localhost:3001/get-products', {
+  const products = fetch('http://localhost:3001/product/get-products', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

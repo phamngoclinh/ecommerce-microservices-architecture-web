@@ -8,7 +8,7 @@ export default async function ProductPage({
 }) {
   const { id } = await params
 
-  const productData = fetch('http://localhost:3001/get-product', {
+  const productData = fetch('http://localhost:3001/product/get-product', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -5,17 +5,19 @@ export function StockStatus({ productId }: { productId: number }) {
   const [stock, setStock] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/get-stock', {
+    fetch('http://localhost:3003/inventory/check-product-stock', {
       method: 'POST',
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify({ productId })
+      body: JSON.stringify({ items: [{ productId }] })
     })
       .then((res) => res.json())
-      .then((data) => setStock(data.quantity))
+      .then((data) => {
+        setStock(data?.details[0]?.available)
+      })
       .catch(() => setStock(null));
   }, [productId]);
 

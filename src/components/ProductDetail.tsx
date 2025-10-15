@@ -14,7 +14,7 @@ export default function ProductDetail({ product }: { product: Promise<Product> }
     <div className="max-w-2xl mx-auto p-8">
       <h1 className="text-2xl font-bold">{productData.name}</h1>
       <p className="text-gray-600">
-        {formatCurrency(productData.sellingPrice)}
+        {formatCurrency(productData.price)}
       </p>
       <p>
         <input

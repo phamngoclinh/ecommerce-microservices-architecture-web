@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function CartPage() {
   const { items, removeItem, clearCart, changeQuantity } = useCartStore();
 
-  const total = items.reduce((sum, i) => sum + i.sellingPrice * i.quantity, 0);
+  const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -21,7 +21,7 @@ export default function CartPage() {
               className="flex justify-between border-b py-2 items-center"
             >
               <p>{item.name}</p>
-              <p>{formatCurrency(item.sellingPrice)} x {item.quantity}</p>
+              <p>{formatCurrency(item.price)} x {item.quantity}</p>
               <input
                 type="number"
                 defaultValue={item.quantity}
@@ -29,7 +29,7 @@ export default function CartPage() {
                 onChange={(e) => changeQuantity(item.id, parseInt(e.target.value))}
                 className="border rounded w-16 text-center"
                 />
-              <p>{formatCurrency(item.sellingPrice * item.quantity)}</p>
+              <p>{formatCurrency(item.price * item.quantity)}</p>
               <button
                 onClick={() => removeItem(item.id)}
                 className="text-red-500"

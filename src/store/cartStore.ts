@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export interface CartItem {
   id: number;
   name: string;
-  sellingPrice: number;
+  price: number;
   quantity: number;
 }
 
@@ -62,7 +62,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         const items = (data as CartItemResponse[]).map(i => ({
           id: i.productId,
           name: i.productName,
-          sellingPrice: i.unitPrice,
+          price: i.unitPrice,
           quantity: i.quantity,
         }))
         set({ items: items as CartItem[], loading: false })
@@ -79,7 +79,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       {
         productId: item.id,
         productName: item.name,
-        unitPrice: item.sellingPrice,
+        unitPrice: item.price,
         quantity: item.quantity
       },
       () => {
@@ -158,7 +158,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         orderItems: get().items.map(item => ({
           productId: item.id,
           productName: item.name,
-          unitPrice: item.sellingPrice,
+          unitPrice: item.price,
           quantity: item.quantity
         })),
         paymentMethod: 'credit_card'
