@@ -12,7 +12,7 @@ export type Order = {
     createdDate: string
 }
 
-export type OrderStatus = 'PENDING' | 'PAID' | 'SHIPPED' | 'COMPLETED';
+export type OrderStatus = 'PENDING' | 'PAID' | 'CONFIRMED' | 'SHIPPED' | 'COMPLETED';
 
 export type OrderItem = {
     id: number;

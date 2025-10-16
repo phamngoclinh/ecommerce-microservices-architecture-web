@@ -27,6 +27,7 @@ export default function PaymentMethodSelect({ onChange }: Props) {
         <option value="credit_card">💳 Credit Card</option>
         <option value="bank_transfer">🏦 Bank Transfer</option>
         <option value="cod">🚚 Cash on Delivery (COD)</option>
+        <option value="momo">Ví Momo</option>
       </select>
     </div>
   );
