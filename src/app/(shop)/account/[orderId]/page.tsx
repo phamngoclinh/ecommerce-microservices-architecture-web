@@ -1,4 +1,3 @@
-
 import OrderDetail from '@/components/OrderDetail';
 import { Suspense } from 'react';
 

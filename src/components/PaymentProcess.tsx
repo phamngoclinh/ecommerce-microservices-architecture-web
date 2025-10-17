@@ -1,8 +1,15 @@
+'use client';
+
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 
+
 export function PaymentProcess({ orderId, totalAmount, paymentMethod }: { orderId: number; totalAmount: number; paymentMethod: string}) {
-    const [paymentUrl, setPaymentUrl] = useState(null)
+  const [paymentUrl, setPaymentUrl] = useState(null)
+  const router = useRouter();
+  const [loadingSuccess, setLoadingSuccess] = useState(false);
+  const [loadingFailure, setLoadingFailure] = useState(false);
   
   useEffect(() => {
     fetch('http://localhost:3004/payments/start', {
@@ -29,11 +36,17 @@ export function PaymentProcess({ orderId, totalAmount, paymentMethod }: { orderI
   }, [])
 
   const trySuccess = () => {
-    fetch(`http://localhost:3004/payment-gateway-simulator/pay/success/${orderId}`)
+    setLoadingSuccess(true)
+    fetch(`http://localhost:3004/payment-gateway-simulator/pay/success/${orderId}`).then(() => {
+      router.push(`/account/${orderId}`)
+    }).finally(() => setLoadingSuccess(false))
   }
 
   const tryFailure = () => {
-    fetch(`http://localhost:3004/payment-gateway-simulator/pay/failed/${orderId}`)
+    setLoadingFailure(true)
+    fetch(`http://localhost:3004/payment-gateway-simulator/pay/failed/${orderId}`).then(() => {
+      router.push(`/account/${orderId}`)
+    }).finally(() => setLoadingFailure(false))
   }
 
   return (<>
@@ -50,8 +63,20 @@ export function PaymentProcess({ orderId, totalAmount, paymentMethod }: { orderI
           </p>
         </div>
         {paymentUrl && <div className="flex gap-3">
-          <button id="btn-fail" onClick={trySuccess} className="px-4 py-2 rounded-md border border-red-300 bg-red-50 hover:bg-red-100 text-red-700 focus:outline-none focus:ring-2 focus:ring-red-200">try to failed</button>
-          <button id="btn-success" onClick={tryFailure} className="px-4 py-2 rounded-md border border-green-300 bg-green-50 hover:bg-green-100 text-green-700 focus:outline-none focus:ring-2 focus:ring-green-200">try to success</button>
+          <button
+            id="btn-fail"
+            onClick={tryFailure}
+            className="px-4 py-2 rounded-md border border-red-300 bg-red-50 hover:bg-red-100 text-red-700 focus:outline-none focus:ring-2 focus:ring-red-200"
+          >
+            {loadingFailure ? 'Process...' : 'Try to failed'}
+          </button>
+          <button
+            id="btn-success"
+            onClick={trySuccess}
+            className="px-4 py-2 rounded-md border border-green-300 bg-green-50 hover:bg-green-100 text-green-700 focus:outline-none focus:ring-2 focus:ring-green-200"
+          >
+            {loadingSuccess ? 'Process...' : 'Try to success'}
+          </button>
         </div>}
       </section>
       <hr className="my-6" />
