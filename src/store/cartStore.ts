@@ -25,7 +25,7 @@ interface CartState {
   removeItem: (id: number) => void;
   clearCart: (success?: () => void, fail?: () => void) => void;
   changeQuantity: (itemId: number, quantity: number) => void;
-  checkout: (payment: string, success: () => void, fail: () => void) => void;
+  checkout: (payment: string, success: (data: unknown) => void, fail: () => void) => void;
 }
 
 const fetchBase = async (endPoint: string, item: unknown, success: (data: CartItemResponse | CartItemResponse[]) => void, failure: (error: Error) => void) => {
@@ -150,7 +150,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       }
     )
   },
-  checkout: (payment, success: () => void, fail: () => void) => {
+  checkout: (payment, success: (data: unknown) => void, fail: () => void) => {
     set({ loading: true })
     fetchBase(
       '/order/create-order',
